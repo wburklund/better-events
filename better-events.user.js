@@ -48,6 +48,11 @@ const addHideButtons = () => {
             hideButton.style = 'position: absolute; top: 0%; left: 0%; width: 100%; height: 100%'
             hideButton.innerText = 'Hide'
 
+            // Make button transparent unless it's being hovered over
+            hideButton.style.opacity = "0"
+            hideButton.onmouseover = function(){this.style.opacity = "1"}
+            hideButton.onmouseout = function(){this.style.opacity = "0"}
+
             // Hide events with this title if the button is clicked
             hideButton.addEventListener('click', function() {
                 hideEvents(getTitleForEvent(this.parentNode.parentNode))
