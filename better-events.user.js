@@ -66,6 +66,4 @@ const init = () => {
     addHideButtons()
 }
 
-// Run init before and after page is completely loaded, just to be sure
 init()
-window.addEventListener('load', init, false)
