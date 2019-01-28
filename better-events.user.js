@@ -6,22 +6,16 @@
 // @match         https://qconline.com/calendar/
 // ==/UserScript==
 
+// Load an existing array of hide filters. Otherwise, create a new array.
+const hideFilters = JSON.parse(localStorage.getItem('hide_filters')) || []
+
 // Gets a list of events for this page
 const getEvents = () => [...document.getElementsByClassName('event-list-item')]
 
 // Gets the event title for an event-list-item
 const getTitleForEvent = event => document.querySelector('#' + event.id + ' .event-title a').innerText
 
-const hideEvents = (newFilter) => {
-    // Load an existing array of hide filters. Otherwise, create a new array.
-    let hideFilters = JSON.parse(localStorage.getItem('hide_filters')) || []
-
-    // Save if a new hide filter is being added
-    if (newFilter) {
-        hideFilters.push(newFilter)
-        localStorage.setItem('hide_filters', JSON.stringify(hideFilters))
-    }
-
+const hideEvents = () => {
     let events = getEvents()
 
     // Find events to hide
@@ -32,6 +26,17 @@ const hideEvents = (newFilter) => {
 
     // Remove hidden events
     matchingEvents.forEach(event => event.parentNode.removeChild(event))
+}
+
+const hideNewEvent = (title) => {
+    // Add new filter
+    hideFilters.push(title)
+
+    // Update LocalStorage
+    localStorage.setItem('hide_filters', JSON.stringify(hideFilters))
+
+    // Update DOM
+    hideEvents()
 }
 
 const addHideButtons = () => {
@@ -55,7 +60,7 @@ const addHideButtons = () => {
 
             // Hide events with this title if the button is clicked
             hideButton.addEventListener('click', function() {
-                hideEvents(getTitleForEvent(this.parentNode.parentNode))
+                hideNewEvent(getTitleForEvent(this.parentNode.parentNode))
             })
         }
     })
