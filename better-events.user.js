@@ -66,9 +66,33 @@ const addHideButtons = () => {
     })
 }
 
+const addResetButton = () => {
+    // Find the h1, and add a button as a child
+    const eventHeading = document.getElementsByTagName('h1')[0]
+    eventHeading.appendChild(document.createElement('button'))
+    const resetButton = eventHeading.lastElementChild
+
+    // Cover the h1 with the child button
+    resetButton.parentElement.style = 'position: relative'
+    resetButton.style = 'position: absolute; top: 0%; left: 0%; width: 100%; height: 100%'
+    resetButton.innerText = 'Reset Hidden Events'
+
+    // Make the button transparent unless hovered over
+    resetButton.style.opacity = "0"
+    resetButton.onmouseover = function(){this.style.opacity = "1"}
+    resetButton.onmouseout = function(){this.style.opacity = "0"}
+
+    // Remove hide filters and reload if clicked
+    resetButton.addEventListener('click', () => {
+        localStorage.removeItem('hide_filters')
+        window.location.reload('false')
+    })
+}
+
 const init = () => {
     hideEvents()
     addHideButtons()
+    addResetButton()
 }
 
 init()
