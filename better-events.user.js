@@ -15,6 +15,11 @@ const getEvents = () => [...document.getElementsByClassName('event-list-item')]
 // Gets the event title for an event-list-item
 const getEventTitle = event => event.querySelector('.tnt-asset-link').innerText
 
+const fixContentStage = () => {
+    const contentStage = document.querySelector('.centered-content-stage')
+    contentStage.style.height = '100px'
+}
+
 const hideEvents = () => {
     let events = getEvents()
 
@@ -124,6 +129,7 @@ const addResetButton = () => {
 }
 
 const init = () => {
+    fixContentStage()
     hideEvents()
     getEvents().forEach(e => displayEventInfo(e))
 
