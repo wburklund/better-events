@@ -71,6 +71,7 @@ const fetchEventInfo = (link) => (
                 costSpan.innerHTML = ''
             }
 
+            // Create a parent span to hold everything
             let parentSpan = document.createElement('span')
             parentSpan.appendChild(timeSpan)
             parentSpan.appendChild(costSpan)
@@ -80,10 +81,8 @@ const fetchEventInfo = (link) => (
 )
 
 const displayEventInfo = () => {
-    const events = getEvents()
-
     // For each event,
-    events.forEach(event => {
+    getEvents().forEach(event => {
         // Get more detailed information for this event
         fetchEventInfo(event.querySelector('.tnt-asset-link').href)
             .then(info => {
@@ -132,7 +131,7 @@ const addResetButton = () => {
     // Cover the h1 with the child button
     resetButton.parentElement.style = 'position: relative'
     resetButton.style = 'position: absolute; top: 0%; left: 0%; width: 100%; height: 100%'
-    resetButton.innerText = 'Reset Hidden Events'
+    resetButton.innerText = 'Reset Event Filters'
 
     // Make the button transparent unless hovered over
     resetButton.style.opacity = "0"
@@ -148,9 +147,9 @@ const addResetButton = () => {
 
 const init = () => {
     fixContentStage()
-    hideEvents()
     displayEventInfo()
 
+    hideEvents()
     addHideButtons()
     addResetButton()
 }
