@@ -51,11 +51,16 @@ const displayEventInfo = (event) => {
             const parser = new DOMParser()
             const eventDocument = parser.parseFromString(text, 'text/html').documentElement
 
-            // Grab the event time from the new document and copy into our existing date element
-            let eventTime = eventDocument.querySelector('.event-time').innerText.trim()
-            eventTime = eventTime.replace('\n', '')
+            // Grab time information from the new document
+            let timeSpan = document.createElement('span')
+            timeSpan.innerHTML = eventDocument.querySelector('.event-time').innerHTML
+            // If the event is happening right now, give it a different color
+            if (timeSpan.innerText.trim().startsWith('This')) {
+                timeSpan.style = 'color: red'
+            }
 
-            eventDateElement.innerHTML = eventTime
+            eventDateElement.innerHTML = ''
+            eventDateElement.appendChild(timeSpan)
         })
 }
 
