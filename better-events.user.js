@@ -39,7 +39,7 @@ const hideNewEvent = (title) => {
     hideEvents()
 }
 
-const showEventInfo = (event) => {
+const displayEventInfo = (event) => {
     const eventLink = event.querySelector('.tnt-asset-link')
     const eventDateElement = event.querySelector('.event-date')
 
@@ -111,7 +111,7 @@ const addResetButton = () => {
 
 const init = () => {
     hideEvents()
-    getEvents().forEach(e => showEventInfo(e))
+    getEvents().forEach(e => displayEventInfo(e))
 
     addHideButtons()
     addResetButton()
