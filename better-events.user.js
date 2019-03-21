@@ -13,14 +13,14 @@ const hideFilters = JSON.parse(localStorage.getItem('hide_filters')) || []
 const getEvents = () => [...document.getElementsByClassName('event-list-item')]
 
 // Gets the event title for an event-list-item
-const getTitleForEvent = event => event.querySelector('.tnt-asset-link').innerText
+const getEventTitle = event => event.querySelector('.tnt-asset-link').innerText
 
 const hideEvents = () => {
     let events = getEvents()
 
     // Find events to hide
     let matchingEvents = events.filter(event => {
-        const title = getTitleForEvent(event)
+        const title = getEventTitle(event)
         return hideFilters.some(filter => filter === title)
     })
 
@@ -41,24 +41,18 @@ const hideNewEvent = (title) => {
 
 const showEventInfo = (event) => {
     const eventLink = event.querySelector('.tnt-asset-link')
-    const eventDate = event.querySelector('.event-date')
+    const eventDateElement = event.querySelector('.event-date')
 
     fetch(eventLink.href)
         .then(res => res.text())
         .then(text => {
             const parser = new DOMParser()
             const eventDocument = parser.parseFromString(text, 'text/html').documentElement
-            const times = [...eventDocument.getElementsByTagName('time')]
 
-            let time = times.map(t => t.innerText.trim()).join(' ')
+            let eventTime = eventDocument.querySelector('.event-time').innerText.trim()
+            eventTime = eventTime.replace('\n', '')
 
-            if (time.indexOf('@') !== -1) {
-                time = time.slice(time.indexOf('@') + 1)
-            }
-
-            time = time.trim()
-
-            eventDate.innerText += ` -- ${time}`
+            eventDateElement.innerHTML = eventTime
         })
 }
 
@@ -83,7 +77,7 @@ const addHideButtons = () => {
 
             // Hide events with this title if the button is clicked
             hideButton.addEventListener('click', function() {
-                hideNewEvent(getTitleForEvent(this.parentNode.parentNode))
+                hideNewEvent(getEventTitle(this.parentNode.parentNode))
             })
         }
     })
