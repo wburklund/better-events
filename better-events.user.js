@@ -59,8 +59,17 @@ const displayEventInfo = (event) => {
                 timeSpan.style = 'color: red'
             }
 
+            // Display cost for events that aren't free
+            let costSpan = document.createElement('span')
+            costSpan.innerHTML = '<br>' + eventDocument.querySelector('.event-cost').innerHTML
+            costSpan.style = 'color: green'
+            if (costSpan.innerText.trim() === 'Free') {
+                costSpan.innerHTML = ''
+            }
+
             eventDateElement.innerHTML = ''
             eventDateElement.appendChild(timeSpan)
+            eventDateElement.appendChild(costSpan)
         })
 }
 
