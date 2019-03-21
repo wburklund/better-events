@@ -47,12 +47,8 @@ const hideNewEvent = (title) => {
     hideEvents()
 }
 
-const displayEventInfo = (event) => {
-    const eventLink = event.querySelector('.tnt-asset-link')
-    const eventDateElement = event.querySelector('.event-date')
-
-    // Follow the event link to get more information
-    fetch(eventLink.href)
+const fetchEventInfo = (link) => (
+    fetch(link)
         .then(res => res.text())
         .then(text => {
             // Parse the page's HTML into a new document
@@ -75,10 +71,29 @@ const displayEventInfo = (event) => {
                 costSpan.innerHTML = ''
             }
 
-            eventDateElement.innerHTML = ''
-            eventDateElement.appendChild(timeSpan)
-            eventDateElement.appendChild(costSpan)
+            let parentSpan = document.createElement('span')
+            parentSpan.appendChild(timeSpan)
+            parentSpan.appendChild(costSpan)
+
+            return parentSpan
         })
+)
+
+const displayEventInfo = () => {
+    const events = getEvents()
+
+    // For each event,
+    events.forEach(event => {
+        // Get more detailed information for this event
+        fetchEventInfo(event.querySelector('.tnt-asset-link').href)
+            .then(info => {
+                // Replace the contents of the date div with this info
+                let date = event.querySelector('.event-date')
+
+                date.innerHTML = ''
+                date.appendChild(info)
+            })
+    })
 }
 
 const addHideButtons = () => {
@@ -134,7 +149,7 @@ const addResetButton = () => {
 const init = () => {
     fixContentStage()
     hideEvents()
-    getEvents().forEach(e => displayEventInfo(e))
+    displayEventInfo()
 
     addHideButtons()
     addResetButton()
