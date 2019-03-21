@@ -43,12 +43,15 @@ const showEventInfo = (event) => {
     const eventLink = event.querySelector('.tnt-asset-link')
     const eventDateElement = event.querySelector('.event-date')
 
+    // Follow the event link to get more information
     fetch(eventLink.href)
         .then(res => res.text())
         .then(text => {
+            // Parse the page's HTML into a new document
             const parser = new DOMParser()
             const eventDocument = parser.parseFromString(text, 'text/html').documentElement
 
+            // Grab the event time from the new document and copy into our existing date element
             let eventTime = eventDocument.querySelector('.event-time').innerText.trim()
             eventTime = eventTime.replace('\n', '')
 
