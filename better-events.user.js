@@ -13,7 +13,7 @@ const hideFilters = JSON.parse(localStorage.getItem('hide_filters')) || []
 const getEvents = () => [...document.getElementsByClassName('event-list-item')]
 
 // Gets the event title for an event-list-item
-const getTitleForEvent = event => document.querySelector('#' + event.id + ' .event-title a').innerText
+const getTitleForEvent = event => event.querySelector('.tnt-asset-link').innerText
 
 const hideEvents = () => {
     let events = getEvents()
