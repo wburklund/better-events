@@ -39,6 +39,29 @@ const hideNewEvent = (title) => {
     hideEvents()
 }
 
+const showEventInfo = (event) => {
+    const eventLink = event.querySelector('.tnt-asset-link')
+    const eventDate = event.querySelector('.event-date')
+
+    fetch(eventLink.href)
+        .then(res => res.text())
+        .then(text => {
+            const parser = new DOMParser()
+            const eventDocument = parser.parseFromString(text, 'text/html').documentElement
+            const times = [...eventDocument.getElementsByTagName('time')]
+
+            let time = times.map(t => t.innerText.trim()).join(' ')
+
+            if (time.indexOf('@') !== -1) {
+                time = time.slice(time.indexOf('@') + 1)
+            }
+
+            time = time.trim()
+
+            eventDate.innerText += ` -- ${time}`
+        })
+}
+
 const addHideButtons = () => {
     // For each event,
     getEvents().forEach(event => {
@@ -91,6 +114,8 @@ const addResetButton = () => {
 
 const init = () => {
     hideEvents()
+    getEvents().forEach(e => showEventInfo(e))
+
     addHideButtons()
     addResetButton()
 }
