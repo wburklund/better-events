@@ -17,6 +17,9 @@ const getEventTitle = event => event.querySelector('.tnt-asset-link').innerText
 
 const fixContentStage = () => {
     const contentStage = document.querySelector('.centered-content-stage')
+    // Remove bugged image
+    contentStage.removeChild(contentStage.firstElementChild)
+    // Set height manually, as the only other child element uses absolute positioning
     contentStage.style.height = '100px'
 }
 
